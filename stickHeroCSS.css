@@ -18,9 +18,20 @@ body {
 
 #score {
     position: absolute;          /* Mutlak konumlandirma yaptim */
-    top: 30px;                   /* Üst kenardan 30 piksel bosluk biraktim */
-    right: 30px;                 /* Sağ kenardan 30 piksel bosluk biraktim */
-    font-size: 2em;              /* Yazı boyutunu 2em olacak sekilde ayarladim */
-    font-weight: 900;            /* Yazı kalınlığı 900 olacak sekilde ayarladim */
+    top: 30px;                   /* Ust kenardan 30 piksel bosluk biraktim */
+    right: 30px;                 /* Sag kenardan 30 piksel bosluk biraktim */
+    font-size: 2em;              /* Yazi boyutunu 2em olacak sekilde ayarladim */
+    font-weight: 900;            /* Yazi kalinligi 900 olacak sekilde ayarladim */
 }
+
+#introduction {
+    width: 200px;                /* Genislik 200 piksel olacak */
+    height: 150px;               /* Yükseklik 150 piksel olacak */
+    position: absolute;          /* Mutlak konumlandirma ayarladim */
+    font-weight: 600;            /* Yazi kalinligi 600 */
+    font-size: 0.8em;            /* Yazi boyutunu 0.8em olarak ayarladim  */
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;       /* Metin font ailesini belirledim */
+    text-align: center;          /* Metni ortaladim */
+    transition: opacity 2s;      /* Opaklık gecisini 2 saniyede gerçeklesecek sekilde ayarladim */
+  }
 
