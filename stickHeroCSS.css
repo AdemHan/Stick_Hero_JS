@@ -49,3 +49,9 @@ body {
     display: none;               /* Baslangıcta görünmeyecek */
     cursor: pointer;             /* Fare imleci pointer seklinde gösterilecek */
 }
+
+#perfect {
+    position: absolute;          /* Mutlak konumlandırma yaptim */
+    opacity: 0;                  /* Opaklık sifir olarak tanimladim */
+    transition: opacity 2s;      /* Opaklık gecisi 2 saniyede gerceklesecek */
+  }
