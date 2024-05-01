@@ -1,7 +1,7 @@
 html,
 body {
-  height: 100%;     /* HTML ve body elementlerinin yüksekligini 100 olarak ayarladim */
-  margin: 0;        /* Kenar boslugunu (margin) sifirladim */
+  height: 100%;                 /* HTML ve body elementlerinin yüksekligini 100 olarak ayarladim */
+  margin: 0;                    /* Kenar boslugunu (margin) sifirladim */
 }   
 
 body {
@@ -33,5 +33,19 @@ body {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;       /* Metin font ailesini belirledim */
     text-align: center;          /* Metni ortaladim */
     transition: opacity 2s;      /* Opaklık gecisini 2 saniyede gerçeklesecek sekilde ayarladim */
-  }
+}
 
+#restart {
+    width: 120px;                /* Genislik 120 piksel olacak */
+    height: 120px;               /* Yükseklik 120 piksel olacak */
+    position: absolute;          /* Mutlak konumlandırma yapildi */
+    border-radius: 50%;          /* Kenar yaricapi 50% olacak */
+    color: white;              /* Yazi rengi beyaz */
+    background-color: red;     /* Arka plan rengini kirmizi yaptim */
+    border: none;                /* Kenar eklemedim */
+    font-weight: 700;            /* Yazi kalinligini 700 belirledim */
+    font-size: 1.2em;            /* Yazi boyutunu 1.2em olacak sekilde ayarladim */
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;     /* Metin font ailesi belirledim */
+    display: none;               /* Baslangıcta görünmeyecek */
+    cursor: pointer;             /* Fare imleci pointer seklinde gösterilecek */
+}
