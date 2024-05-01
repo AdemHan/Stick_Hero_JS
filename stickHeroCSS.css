@@ -1,0 +1,10 @@
+html,
+body {
+  height: 100%;     /* HTML ve body elementlerinin yüksekligini 100 olarak ayarladim */
+  margin: 0;        /* Kenar boslugunu (margin) sifirladim */
+}   
+
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;        /* Metin fontlarini ekledim */
+    cursor: pointer;                                                     /* Fare imlecini pointer seklinde gösterdim */
+  }
