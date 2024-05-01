@@ -3,7 +3,7 @@ Array.prototype.last = function () {        // Dizinin son elemanini donduren bi
     return this[this.length - 1];
 };
   
-  // Radyanlar yerine dereceleri kabul eden bir sinüs fonksiyonu yaziyorum
+  // Radyanlar yerine dereceleri kabul eden bir sinus fonksiyonu yaziyorum
   Math.sinus = function (degree) {
     return Math.sin((degree / 180) * Math.PI);      // Derecenin radyana donusumunu yaptim
   };
@@ -12,7 +12,7 @@ Array.prototype.last = function () {        // Dizinin son elemanini donduren bi
   let phase = "waiting";    // Bekleme durumu
   let lastTimestamp;        // Onceki requestAnimationFrame dongusunun zaman islemi
   
-  let heroX;                // Ileri doGru hareket ettiginde degisir
+  let heroX;                // Ileri dogru hareket ettiginde degisir
   let heroY;                // Sadece düstügünde degisir
   let sceneOffset;          // Tüm oyunu hareket ettirir
   
@@ -62,3 +62,48 @@ const introductionElement = document.getElementById("introduction");    // Tanit
 const perfectElement = document.getElementById("perfect");              // Mukemmel element
 const restartButton = document.getElementById("restart");               // Yeniden baslatma dügmesi
 const scoreElement = document.getElementById("score");                  // Skor elementi
+
+// Düzeni başlat
+resetGame();
+
+// Oyun değişkenlerini ve düzenlerini sıfırlar ancak oyunu başlatmaz (oyun, tuşa basıldığında başlar)
+function resetGame() {
+  // Oyun ilerlemesini sıfırla
+  phase = "waiting";                // Oyun asamasi: bekleyen
+  lastTimestamp = undefined;        // Son zaman damgasi
+  sceneOffset = 0;                  // Sahne konumu
+  score = 0;                        // Skor
+
+  introductionElement.style.opacity = 1;    // Tanıtım elementinin opakligini tam yap
+  perfectElement.style.opacity = 0;         // Mukemmel elementin opakligini sifirla (gizle)
+  restartButton.style.display = "none";     // Yeniden baslatma dugmesini gizle
+  scoreElement.innerText = score;           // Skor elementinin icerigini skora ayarla
+
+// İlk platform her zaman aynıdır
+// x + w, paddingX ile eşleşir
+platforms = [{ x: 50, w: 50 }];             // İlk platformu tanımlar
+generatePlatform();                         // Yeni platformlar olusturur
+generatePlatform();
+generatePlatform();
+generatePlatform();
+
+sticks = [{ x: platforms[0].x + platforms[0].w, length: 0, rotation: 0 }]; // Çubukları tanımlar
+
+trees = [];                                 // Agaclari sifirlar
+generateTree();                             // Yeni agaclar olusturur
+generateTree();
+generateTree();
+generateTree();
+generateTree();
+generateTree();
+generateTree();
+generateTree();
+generateTree();
+generateTree();
+
+heroX = platforms[0].x + platforms[0].w - heroDistanceFromEdge; // Kahramanın X konumunu belirler
+heroY = 0;          //Kahramanın Y konumunu sıfırlar
+
+draw();             // Tuvali çizer
+
+}
