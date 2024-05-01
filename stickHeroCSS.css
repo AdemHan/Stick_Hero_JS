@@ -7,4 +7,14 @@ body {
 body {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;        /* Metin fontlarini ekledim */
     cursor: pointer;                                                     /* Fare imlecini pointer seklinde gösterdim */
-  }
+}
+
+.container {
+    display: flex;               /* esnek yapida düzenlendi */
+    justify-content: center;     /* yatay eksende ortaladim */
+    align-items: center;         /* dikey eksende ortaladim */
+    height: 100%;                /* Container'ın yüksekligini %100 olarak ayarladim */
+}
+
+
+
