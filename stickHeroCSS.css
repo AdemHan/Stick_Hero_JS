@@ -16,5 +16,11 @@ body {
     height: 100%;                /* Container'ın yüksekligini %100 olarak ayarladim */
 }
 
-
+#score {
+    position: absolute;          /* Mutlak konumlandirma yaptim */
+    top: 30px;                   /* Üst kenardan 30 piksel bosluk biraktim */
+    right: 30px;                 /* Sağ kenardan 30 piksel bosluk biraktim */
+    font-size: 2em;              /* Yazı boyutunu 2em olacak sekilde ayarladim */
+    font-weight: 900;            /* Yazı kalınlığı 900 olacak sekilde ayarladim */
+}
 
