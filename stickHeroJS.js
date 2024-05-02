@@ -183,3 +183,21 @@ window.addEventListener("mousedown", function (event) {
     window.requestAnimationFrame(animate); // Animasyonu başlatmak için istek yap
   }
 });
+
+// Fare tıklamasını dinle
+window.addEventListener("mouseup", function (event) {
+  // Eğer "uzatma" aşamasındaysak
+  if (phase == "stretching") {
+    phase = "turning"; // Aşamayı "dönme" olarak ayarla
+  }
+});
+
+// Pencere boyutu değişikliğini dinle
+window.addEventListener("resize", function (event) {
+  canvas.width = window.innerWidth; // Canvas genişliğini pencere genişliği olarak ayarla
+  canvas.height = window.innerHeight; // Canvas yüksekliğini pencere yüksekliği olarak ayarla
+  draw(); // Çizimi yeniden çiz
+});
+
+// Animasyon çerçevesi isteği yap
+window.requestAnimationFrame(animate);
