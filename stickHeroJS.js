@@ -133,3 +133,33 @@ function generateTree() {
   // Yeni ağaç, belirlenen X koordinatı ve renk ile ağaç dizisine eklenir.
   trees.push({ x, color });
 }
+
+//yeni platform olusturmak için bir fonksiyon yaziyorum
+function generatePlatform() {
+  //platformlar arası max ve min bosluk degerlerini belirliyorum.
+  const minimumGap = 40;
+  const maximumGap = 200;
+  //platformun genislik degerlerinin max ve min aralıgını belirliyorum.
+  const minimumWidth = 20;
+  const maximumWidth = 100;
+
+  // En uzaktaki platformun sag kenarının X koordinatı bulunur.
+  // Eğer bir onceki platform varsa, bu platformun sag kenarı baz alınır, yoksa sıfır kabul edilir.
+  const lastPlatform = platforms[platforms.length - 1];
+  let furthestX = lastPlatform.x + lastPlatform.w;
+
+  // Yeni platformun X koordinatını belirliyorum.
+  // Bu deger, en uzaktaki platformun sag kenariyla minimum ve maksimum bosluk arasında rastgele belirlenen bir degerin toplamidir.
+  const x =
+    furthestX +
+    minimumGap +
+    Math.floor(Math.random() * (maximumGap - minimumGap));
+  
+  // Yeni platformun genisligini belirliyorum. Bu genislik max ve min arasında random bir deger olacak
+  const w =
+    minimumWidth + Math.floor(Math.random() * (maximumWidth - minimumWidth));
+
+  // Yeni platform belirlenen parametrelerle birlikte platform dizisine eklenir.
+  platforms.push({ x, w });
+}
+
