@@ -222,3 +222,37 @@ function animate(timestamp) {
       sticks.last().length += (timestamp - lastTimestamp) / stretchingSpeed;
       break;
     }
+   // "turning" durumunda:
+    case "turning": {
+      // Son çubuğun dönme açısı artırılır.
+      sticks.last().rotation += (timestamp - lastTimestamp) / turningSpeed;
+
+      // Dönme açısı 90 dereceden büyükse:
+      if (sticks.last().rotation > 90) {
+        sticks.last().rotation = 90; // Dönme açısı 90 dereceye sabitlenir.
+
+        // Çubuğun çarptığı sonraki platform ve mükemmel vuruş kontrol edilir.
+        const [nextPlatform, perfectHit] = thePlatformTheStickHits();
+        if (nextPlatform) {
+          // Skor artırılır
+          score += perfectHit ? 2 : 1;
+          scoreElement.innerText = score;
+
+          // Mükemmel vuruş varsa, ekranın altında bir gösterge gösterilir.
+          if (perfectHit) {
+            perfectElement.style.opacity = 1;
+            setTimeout(() => (perfectElement.style.opacity = 0), 1000);
+          }
+
+          // Yeni bir platform ve ağaçlar oluşturulur.
+          generatePlatform();
+          generateTree();
+          generateTree();
+        }
+
+        // Oyunun durumu "walking" olarak değiştirilir.
+        phase = "walking";
+      }
+      break;
+    }
+
