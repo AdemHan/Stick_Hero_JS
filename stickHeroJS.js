@@ -172,3 +172,14 @@ window.addEventListener("keydown", function (event) {
     return;
   }
 });
+
+// Fare tıklamasını bekler
+// Eğer bekleme aşamasındaysak calısır
+window.addEventListener("mousedown", function (event) {
+  if (phase == "waiting") {
+    lastTimestamp = undefined; // Son zaman damgasını belirsiz yap
+    introductionElement.style.opacity = 0; // Tanıtım öğesinin opaklığını sıfırla
+    phase = "stretching"; // Aşamayı "uzatma" olarak ayarla
+    window.requestAnimationFrame(animate); // Animasyonu başlatmak için istek yap
+  }
+});
