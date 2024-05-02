@@ -81,16 +81,16 @@ function resetGame() {
 
 // İlk platform her zaman aynıdır
 // x + w, paddingX ile eşleşir
-platforms = [{ x: 50, w: 50 }];             // İlk platformu tanımlar
-generatePlatform();                         // Yeni platformlar olusturur
+platforms = [{ x: 50, w: 50 }];             // İlk platformu tanımladim
+generatePlatform();                         // Yeni platformlar olusturdum
 generatePlatform();
 generatePlatform();
 generatePlatform();
 
 sticks = [{ x: platforms[0].x + platforms[0].w, length: 0, rotation: 0 }]; // Çubukları tanımlar
 
-trees = [];                                 // Agaclari sifirlar
-generateTree();                             // Yeni agaclar olusturur
+trees = [];                                 // Agaclari sifirladim
+generateTree();                             // Yeni agaclar olusturdum
 generateTree();
 generateTree();
 generateTree();
@@ -102,8 +102,34 @@ generateTree();
 generateTree();
 
 heroX = platforms[0].x + platforms[0].w - heroDistanceFromEdge; // Kahramanın X konumunu belirler
-heroY = 0;          //Kahramanın Y konumunu sıfırlar
+heroY = 0;          //Kahramanin Y konumunu sıfırladim
 
-draw();             // Tuvali çizer
+draw();             // Tuvali çizdirdim
+}
 
+// Yeni bir agac olusturdum
+function generateTree() {
+  // Agacların ne mesafeyle olusacagı max ve min degerlerini olusturdum
+  const minimumGap = 30;
+  const maximumGap = 150;
+
+  // En uzaktaki agacın sağ kenarının X koordinatı bulunur.
+  // Eğer bir önceki ağaç varsa, bu ağacın sağ kenarı baz alınır, yoksa sıfır kabul edilir.
+  const lastTree = trees[trees.length - 1];
+  let furthestX = lastTree ? lastTree.x : 0;
+
+  // Yeni ağacın X koordinatı belirlenir.
+  // Bu değer, en uzaktaki ağacın sağ kenarıyla minimum ve maksimum boşluk arasında rastgele belirlenen bir değerin toplamıdır.
+  const x =
+    furthestX +
+    minimumGap +
+    Math.floor(Math.random() * (maximumGap - minimumGap));
+
+  // Ağaçların renkleri belirledim.
+  const treeColors = ["#6D8821", "#8FAC34", "#98B333"];
+  // Rastgele bir renk seçtirdim.
+  const color = treeColors[Math.floor(Math.random() * 3)];
+
+  // Yeni ağaç, belirlenen X koordinatı ve renk ile ağaç dizisine eklenir.
+  trees.push({ x, color });
 }
