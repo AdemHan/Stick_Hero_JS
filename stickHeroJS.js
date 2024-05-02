@@ -201,3 +201,24 @@ window.addEventListener("resize", function (event) {
 
 // Animasyon çerçevesi isteği yap
 window.requestAnimationFrame(animate);
+
+// Oyunun ana döngüsü
+function animate(timestamp) {
+  // İlk çağrıda, önceki zaman damgası atanır ve fonksiyon tekrar çağrılır.
+  if (!lastTimestamp) {
+    lastTimestamp = timestamp;
+    window.requestAnimationFrame(animate);
+    return;
+  }
+
+  // Oyunun durumuna bağlı olarak işlemler yapılır.
+  switch (phase) {
+    // "waiting" aşamasında döngü durdurulur.
+    case "waiting":
+      return; // Döngüyü durdur
+    // "stretching" aşamasında:
+    case "stretching": {
+      // Çubuk uzatılırken, son çubuğun uzunluğu artırılır.
+      sticks.last().length += (timestamp - lastTimestamp) / stretchingSpeed;
+      break;
+    }
