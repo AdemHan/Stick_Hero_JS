@@ -163,3 +163,12 @@ function generatePlatform() {
   platforms.push({ x, w });
 }
 
+resetGame();
+// Eğer boşluk tuşuna basıldıysa oyunu yeniden başlat
+window.addEventListener("keydown", function (event) {
+  if (event.key == " ") {
+    event.preventDefault();  // Boşluk tuşunun varsayılan davranışını engelle (örneğin, kaydırma)
+    resetGame(); // Oyunu sıfırlamak için fonksiyonu çağır
+    return;
+  }
+});
