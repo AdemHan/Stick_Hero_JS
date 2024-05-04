@@ -298,6 +298,39 @@ function animate(timestamp) {
       }
       break;
     }
+    case "falling": {
+      // Çubuğun son dönüş açısı 180 derecenin altındaysa
+      if (sticks.last().rotation < 180)
+        // Dönme hızıyla orantılı olarak çubuğun son dönüş açısını güncelle
+        sticks.last().rotation += (timestamp - lastTimestamp) / turningSpeed;
+
+      // Kahramanın Y konumunu düşme hızıyla orantılı olarak güncelle,
+      heroY += (timestamp - lastTimestamp) / fallingSpeed;
+
+      // Maksimum Y pozisyonunu hesapla
+      const maxHeroY =
+        platformHeight + 100 + (window.innerHeight - canvasHeight) / 2;
+      if (heroY > maxHeroY) {
+        // Eğer kahraman maksimum Y pozisyonuna ulaşırsa, yeniden başlatma butonunu göster ve işlemi sonlandır
+        restartButton.style.display = "block";
+        return;
+      }
+      break;
+    }
+    default:
+      // Yanlış aşama hatası fırlat
+      throw Error("Wrong phase");
+  }
+
+  // Çizimi yeniden çağır
+  draw();
+  // Animasyonu devam ettir
+  window.requestAnimationFrame(animate);
+
+  // Son zaman damgasını güncelle
+  lastTimestamp = timestamp;
+}
+
 
 
 
