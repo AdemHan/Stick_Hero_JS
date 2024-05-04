@@ -280,5 +280,24 @@ function animate(timestamp) {
       }
       break;
     }
+    case "transitioning": {
+      // Sahne ofsetini güncelle, geçiş hızıyla orantılı olarak
+      sceneOffset += (timestamp - lastTimestamp) / transitioningSpeed;
+
+      // Çubuğun vurduğu bir sonraki platformu al
+      const [nextPlatform] = thePlatformTheStickHits();
+      if (sceneOffset > nextPlatform.x + nextPlatform.w - paddingX) {
+        // Bir sonraki adımı ekle
+        sticks.push({
+          x: nextPlatform.x + nextPlatform.w,
+          length: 0,
+          rotation: 0
+        });
+        // Bekleme aşamasına geç
+        phase = "waiting";
+      }
+      break;
+    }
+
 
 
