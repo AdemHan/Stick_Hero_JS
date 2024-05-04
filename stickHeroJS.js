@@ -255,4 +255,30 @@ function animate(timestamp) {
       }
       break;
     }
+    case "walking": {
+      // Kahramanin X konumunu  yürüme hızıyla orantılı olacak sekilde güncelle,
+      heroX += (timestamp - lastTimestamp) / walkingSpeed;
+
+      // Bir sonraki platforma gecme durumu
+      const [nextPlatform] = thePlatformTheStickHits();
+      if (nextPlatform) {
+        // Eğer kahraman başka bir platforma ulaşırsa pozisyonunu sınırla
+        const maxHeroX = nextPlatform.x + nextPlatform.w - heroDistanceFromEdge;
+        if (heroX > maxHeroX) {
+          // Eğer kahraman maksimum X pozisyonuna ulaşırsa, geçiş aşamasına geç
+          heroX = maxHeroX;
+          phase = "transitioning";
+        }
+      } else {
+        // Eğer kahraman başka bir platforma ulaşmayacaksa, pozisyonunu sınırla
+        const maxHeroX = sticks.last().x + sticks.last().length + heroWidth;
+        if (heroX > maxHeroX) {
+          // Eğer kahraman maksimum X pozisyonuna ulaşırsa, düşme aşamasına geç
+          heroX = maxHeroX;
+          phase = "falling";
+        }
+      }
+      break;
+    }
+
 
