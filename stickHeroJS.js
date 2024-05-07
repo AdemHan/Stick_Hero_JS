@@ -330,7 +330,216 @@ function animate(timestamp) {
   // Son zaman damgasını güncelle
   lastTimestamp = timestamp;
 }
+function thePlatformTheStickHits() { // Çubuğun rotasyonunu kontrol eden fonksiyon
+  if (sticks.last().rotation != 90) // Rotasyon 90 derece değilse hata ver
+      throw Error(`Stick is ${sticks.last().rotation}°`);
+    const stickFarX = sticks.last().x + sticks.last().length; // Çubuğun uç noktasının koordinatı hesaplanır, çubuğun vurduğu platform bulunur.
+    const platformTheStickHits = platforms.find(
+    (platform) => platform.x < stickFarX && stickFarX < platform.x + platform.w
+  );
+  if (  // Çubuğun platformların orta noktasına vurup vurmadığını kontrol eden blok, vurduysa true vurmadıysa false döndürür.
+    platformTheStickHits  &&
+    platformTheStickHits.x + platformTheStickHits.w / 2 - perfectAreaSize / 2 <
+    stickFarX &&
+    stickFarX <
+    platformTheStickHits.x + platformTheStickHits.w / 2 + perfectAreaSize / 2
+  )
+    return [platformTheStickHits, true];
+    return [platformTheStickHits, false];
+}
+function draw() {
+  ctx.save(); // Oyunu kaydet
+  ctx.clearRect(0, 0, window.innerWidth, window.innerHeight); // Çizim alanını temizle
+  drawBackground(); // Arkaplanı çiz
 
+  // Ana çizim alanını ekranın ortasına hizala
+  ctx.translate(
+    (window.innerWidth - canvasWidth) / 2 - sceneOffset,
+    (window.innerHeight - canvasHeight) / 2
+  );
 
+  // Ögeleri çizer
+  drawPlatforms();
+  drawHero();
+  drawSticks();
 
+  // Önceki durumu geri yükler
+  ctx.restore();
+}
+restartButton.addEventListener("click", function (event) { // Yeniden başla butonuna tıklanıldığında gerçekleşecek olayları tanımlar.
+  event.preventDefault();
+  resetGame();
+  restartButton.style.display = "none";
+});
+function drawPlatforms() { // Platformları çizen fonksiyon
+  platforms.forEach(({ x, w }) => { // Platform rengi siyah tanımlanır. x,y büyüklükleri ayarlanır.
+    ctx.fillStyle = "black";
+    ctx.fillRect(
+      x,
+      canvasHeight - platformHeight,
+      w,
+      platformHeight + (window.innerHeight - canvasHeight) / 2
+    );
+    // Kahramanın bulunmadığı platformun ortasına kırmızı nokta çizer.
+    if (sticks.last().x < x) {
+      ctx.fillStyle = "red";
+      ctx.fillRect(
+        x + w / 2 - perfectAreaSize / 2,
+        canvasHeight - platformHeight,
+        perfectAreaSize,
+        perfectAreaSize
+      );
+    }
+  });
+}
+function drawHero() { // Ana karakteri, kahramanı çizen fonksiyon.
+  ctx.save();
+  ctx.fillStyle = "black"; // Siyah tanımlanır
+  ctx.translate(
+    heroX - heroWidth / 2,
+    heroY + canvasHeight - platformHeight - heroHeight / 2 // x,y koordinatlarına göre konumu ayarlanır.
+  );
 
+  // Vücudunun boyutları ayarlanır.
+  drawRoundedRect(
+    -heroWidth / 2,
+    -heroHeight / 2,
+    heroWidth,
+    heroHeight - 4,
+    5
+  );
+
+  // Bacaklarının boyutları ayarlanır
+  const legDistance = 5;
+  ctx.beginPath();
+  ctx.arc(legDistance, 11.5, 3, 0, Math.PI * 2, false);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(-legDistance, 11.5, 3, 0, Math.PI * 2, false);
+  ctx.fill();
+
+  // Beyaz bir göz çizilir.
+  ctx.beginPath();
+  ctx.fillStyle = "white";
+  ctx.arc(5, -7, 3, 0, Math.PI * 2, false);
+  ctx.fill();
+
+  // Kırmızı bir bandana çizilir.
+  ctx.fillStyle = "red";
+  ctx.fillRect(-heroWidth / 2 - 1, -12, heroWidth + 2, 4.5);
+  ctx.beginPath();
+  ctx.moveTo(-9, -14.5);
+  ctx.lineTo(-17, -18.5);
+  ctx.lineTo(-14, -8.5);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(-10, -10.5);
+  ctx.lineTo(-15, -3.5);
+  ctx.lineTo(-5, -7);
+  ctx.fill();
+
+  ctx.restore();
+}
+function drawRoundedRect(x, y, width, height, radius) { // Fonksiyon bir yuvarlak dikdörtgen çizmemize yarar. Dikdörtgen önce çizilir daha sonra arcTo kullanılarak yuvarlak hale getirilir.
+  ctx.beginPath();
+  ctx.moveTo(x, y + radius);
+  ctx.lineTo(x, y + height - radius);
+  ctx.arcTo(x, y + height, x + radius, y + height, radius);
+  ctx.lineTo(x + width - radius, y + height);
+  ctx.arcTo(x + width, y + height, x + width, y + height - radius, radius);
+  ctx.lineTo(x + width, y + radius);
+  ctx.arcTo(x + width, y, x + width - radius, y, radius);
+  ctx.lineTo(x + radius, y);
+  ctx.arcTo(x, y, x, y + radius, radius);
+  ctx.fill();
+}
+function drawSticks() { // Çubukları çizmemize yarayan fonksiyon.
+  sticks.forEach((stick) => {
+    ctx.save();
+
+    // Çubuğun dönüşünü ve düşeceği yeri hesaplar.
+    ctx.translate(stick.x, canvasHeight - platformHeight);
+    ctx.rotate((Math.PI / 180) * stick.rotation);
+
+    // Çubuğun boyutlarını ve hareketini tanımlarız.
+    ctx.beginPath();
+    ctx.lineWidth = 2;
+    ctx.moveTo(0, 0);
+    ctx.lineTo(0, -stick.length);
+    ctx.stroke();
+
+    ctx.restore();
+  });
+}
+function drawBackground() { // Arkaplanı çizen fonksiyon
+  // Gökyüzünü verilen renk paletine göre çizer.
+  var gradient = ctx.createLinearGradient(0, 0, 0, window.innerHeight); 
+  gradient.addColorStop(0, "#BBD691");
+  gradient.addColorStop(1, "#FEF1E1");
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, window.innerWidth, window.innerHeight); // Yükseliği ekranın en üstüne kadardır. Genişliği ekranın en solundan en sağına kadardır.
+
+  // Arkaplandaki tepeleri verilen renk paletine göre çizer
+  drawHill(hill1BaseHeight, hill1Amplitude, hill1Stretch, "#95C629");
+  drawHill(hill2BaseHeight, hill2Amplitude, hill2Stretch, "#659F1C");
+
+  // Ağaçları çizer. Değişkendir her ağaç farklı olabilir. Her adımda ekrandan dışarı çıkan ağaçlar kaybolur ve yenisi eklenir.
+  trees.forEach((tree) => drawTree(tree.x, tree.color));
+}
+function drawHill(baseHeight, amplitude, stretch, color) { // Tepeleri çizen fonksiyondur. Verilen yüksekliğe, ve genişliğe göre çizer. Ekranın dışına taşan tepeler kaybolur ve ilerledikçe yenisi çizilir.
+  ctx.beginPath();
+  ctx.moveTo(0, window.innerHeight);
+  ctx.lineTo(0, getHillY(0, baseHeight, amplitude, stretch));
+  for (let i = 0; i < window.innerWidth; i++) {  //baseHeight, tepenin taban yüksekiğidir. amplitude, maksimum yüksekliktir. strectch, genişliktir. Döngü halinde çalışır ve dalga şeklinde bir tepe olmasını sağlar.
+    ctx.lineTo(i, getHillY(i, baseHeight, amplitude, stretch));
+  }
+  ctx.lineTo(window.innerWidth, window.innerHeight);
+  ctx.fillStyle = color;
+  ctx.fill();
+}
+
+function drawTree(x, color) { // Ağaçları çizen fonksiyondur.
+  ctx.save();
+  ctx.translate( // Ağaçların burada, tepenin üzerinde olması hedeflenir ve yüksekliği üzerinde bulunduğu tepeye göre ayarlanır.
+    (-sceneOffset * backgroundSpeedMultiplier + x) * hill1Stretch,
+    getTreeY(x, hill1BaseHeight, hill1Amplitude)
+  );
+      // Ağaçların boyutları ve tipleri sabittir.
+  const treeTrunkHeight = 5;
+  const treeTrunkWidth = 2;
+  const treeCrownHeight = 25;
+  const treeCrownWidth = 10;
+
+  // Ağacın gövde kısmını çizer. Rengi ve boyutları sabittir. Yalnızca konumu farklıdır, tepeye göre değişmektedir.
+  ctx.fillStyle = "#7D833C";
+  ctx.fillRect(
+    -treeTrunkWidth / 2,
+    -treeTrunkHeight,
+    treeTrunkWidth,
+    treeTrunkHeight
+  );
+
+  // Ağacın üst kısmını çizen fonksiyon. Boyutları sabittir, rengi değişkendir. Aynı da olabilmektedir.
+  ctx.beginPath();
+  ctx.moveTo(-treeCrownWidth / 2, -treeTrunkHeight);
+  ctx.lineTo(0, -(treeTrunkHeight + treeCrownHeight));
+  ctx.lineTo(treeCrownWidth / 2, -treeTrunkHeight);
+  ctx.fillStyle = color;
+  ctx.fill();
+
+  ctx.restore();
+}
+
+function getHillY(windowX, baseHeight, amplitude, stretch) { // Tepenin y eksenindeki konumunu döndüren fonksiyondur. Bu fonksiyona göre ilerledikçe yeni tepe oluşturulur ve tepenin arkada kalan kısmın kaybolur.
+  const sineBaseY = window.innerHeight - baseHeight;
+  return (
+    Math.sinus((sceneOffset * backgroundSpeedMultiplier + windowX) * stretch) *
+      amplitude +
+    sineBaseY
+  );
+}
+
+function getTreeY(x, baseHeight, amplitude) { // Ağaçların y eksenindeki konumunu döndüren fonksiyondur. Bu fonksiyona göre ilerledikçe yeni tepe oluşturulur ve arkada kalan ağaçlar kaybolur.
+  const sineBaseY = window.innerHeight - baseHeight;
+  return Math.sinus(x) * amplitude + sineBaseY;
+}
